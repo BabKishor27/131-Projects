@@ -57,16 +57,22 @@ public:
 2. switchToPrevTab() - This function switches the cursor from current tab to previous tab. If there is a previous tab, print the details of the tab like url,
                           name and memory. If there is no previous tab it should print a message that says  “No previous tab”. */
     void switchToPrevTab() {
-        if (current && current->prev) {
-            current = current->prev;
-            std::cout << "Current Tab:" << '\n';
-            std::cout << "Url: " << current->url << '\n';
-            std::cout << "Name: " << current->name << '\n';
-            std::cout << "Memory: " << current->memory << '\n';
-        } else {
-            std::cout << "No previous tab" <<'\n';
-        }
+    if (current == nullptr) { // Check if current is null
+        std::cout << "No tab is open" << '\n';
+        return;
     }
+
+    if (current->prev) { // Check if there's a previous tab
+        current = current->prev;
+        std::cout << "Current Tab:" << '\n';
+        std::cout << "Url: " << current->url << '\n';
+        std::cout << "Name: " << current->name << '\n';
+        std::cout << "Memory: " << current->memory << '\n';
+    } else {
+        std::cout << "No previous tab" << '\n';
+    }
+}
+
 
 /*3. switchToNextTab() - This function switches the cursor from the current tab to the next tab. If the next tab is present then print details of the tab. 
                           If there is no previous tab it should print a message that says  “No next tab”. */ 
@@ -145,23 +151,29 @@ public:
 /*7. moveCurrentToFirst() - If the current tab is still present in the browser, move it to first position.
                              Before function executed: */
     void moveCurrentToFirst() {
+        if (!current || current == head) { // Check if current is nullptr or already at head
+            return;
+        }
         if (current->next) {
             current->next->prev = current->prev;
         }
-
         if (current->prev) {
             current->prev->next = current->next;
         }
-
+        if (current == tail) {
+            tail = current->prev;
+        }
         current->prev = nullptr;
         current->next = head;
-        head->prev = current;
+        if (head) {
+            head->prev = current;
+        }
         head = current;
-
-        if (current->next == nullptr) {
+        if (!tail) {
             tail = current;
         }
     }
+
  
 /*8. total_memory() - It calculates the total memory consumed by the browser in total. It will return the memory consumption. */
     T total_memory() {
@@ -178,6 +190,10 @@ public:
 /*9. deleteTab() - It will delete the tab which is consuming the highest memory out of all the tabs. After deletion it will print the message and tab which is deleted
                 with memory consumption. */
     void deleteTab() {
+        if (head == nullptr) {
+            std::cout << "No tabs to delete." << std::endl;
+            return;
+        }
         Tab<T> *temp = head;
         Tab<T> *MaxTab = head;
 

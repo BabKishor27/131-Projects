@@ -51,7 +51,7 @@ template<typename T> class Inventory{ // class Inventory's type is the previous 
         }
 
         /* TO DO: #3
-        Update Item: Write a function updateItem() which will update the quantity, expiration and category. updateItem() will take
+        Update Item: Write a unction updateItem() which will update the quantity, expiration and category. updateItem() will take
         four parameters: itemname, expiration, quantity and category. It should search the item from the name and update the item with 
         given parameters. We can only update the items that are already present in inventory. If time is not found throw an exception “Item not found”.*/
         void updateItem(const T& item_name, const T& expiration, const T& category,int quantity){
